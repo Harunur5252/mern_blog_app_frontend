@@ -1,8 +1,38 @@
-import PopularPosts from '../components/single_blog_post/PopularPosts'
-import Tags from '../components/single_blog_post/Tags';
+import PopularPosts from "../components/single_blog_post/PopularPosts";
+import Tags from "../components/single_blog_post/Tags";
 import Categories from "../components/single_blog_post/Categories";
+import { useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
+import {
+  useGetCategoryAndTagsQuery,
+  useGetCategoryWiseBlogQuery,
+} from "../features/api/blogPostsApiSlices";
+import { format } from "date-fns";
+import parse from "html-react-parser";
 
-function CategoryWiseBlog({title}) {
+function CategoryWiseBlog({ title }) {
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
+  const { categoryId } = useParams();
+  // finding category
+  const { category } = useGetCategoryAndTagsQuery(undefined, {
+    selectFromResult: ({ data }) => ({
+      category: data?.categories?.find(
+        (category) => category?._id === categoryId
+      ),
+    }),
+  });
+  // finding all category and tag
+  const { data } = useGetCategoryAndTagsQuery(undefined, {
+    selectFromResult: ({ data }) => ({
+      data,
+    }),
+  });
+  const { data: categoryWiseBlog, isLoading } = useGetCategoryWiseBlogQuery({
+    category: category?._id,
+  });
+
   return (
     <>
       <title>{title}</title>
@@ -10,171 +40,75 @@ function CategoryWiseBlog({title}) {
         <div className="container">
           <div className="row">
             <div className="col-12">
-              <div className="heading">Category: Business</div>
+              <div className="heading">Category: {category?.categoryName}</div>
             </div>
           </div>
           <div className="row posts-entry">
             <div className="col-lg-8">
-              <div className="blog-entry d-flex blog-entry-search-item">
-                <a href="single.html" className="img-link me-4">
-                  <img
-                    src="../images/img_1_sq.jpg"
-                    alt="Image"
-                    className="img-fluid"
-                  />
-                </a>
-                <div>
-                  <span className="date">
-                    Apr. 14th, 2022 &bullet; <a href="#">Business</a>
-                  </span>
-                  <h2>
-                    <a href="single.html">
-                      Thought you loved Python? Wait until you meet Rust
-                    </a>
-                  </h2>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Unde, nobis ea quis inventore vel voluptas.
-                  </p>
-                  <p>
-                    <a
-                      href="single.html"
-                      className="btn btn-sm btn-outline-primary"
-                    >
-                      Read More
-                    </a>
-                  </p>
-                </div>
-              </div>
-
-              <div className="blog-entry d-flex blog-entry-search-item">
-                <a href="single.html" className="img-link me-4">
-                  <img
-                    src="../images/img_2_sq.jpg"
-                    alt="Image"
-                    className="img-fluid"
-                  />
-                </a>
-                <div>
-                  <span className="date">
-                    Apr. 14th, 2022 &bullet; <a href="#">Business</a>
-                  </span>
-                  <h2>
-                    <a href="single.html">
-                      Thought you loved Python? Wait until you meet Rust
-                    </a>
-                  </h2>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Unde, nobis ea quis inventore vel voluptas.
-                  </p>
-                  <p>
-                    <a
-                      href="single.html"
-                      className="btn btn-sm btn-outline-primary"
-                    >
-                      Read More
-                    </a>
-                  </p>
-                </div>
-              </div>
-
-              <div className="blog-entry d-flex blog-entry-search-item">
-                <a href="single.html" className="img-link me-4">
-                  <img
-                    src="../images/img_3_sq.jpg"
-                    alt="Image"
-                    className="img-fluid"
-                  />
-                </a>
-                <div>
-                  <span className="date">
-                    Apr. 14th, 2022 &bullet; <a href="#">Business</a>
-                  </span>
-                  <h2>
-                    <a href="single.html">
-                      Thought you loved Python? Wait until you meet Rust
-                    </a>
-                  </h2>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Unde, nobis ea quis inventore vel voluptas.
-                  </p>
-                  <p>
-                    <a
-                      href="single.html"
-                      className="btn btn-sm btn-outline-primary"
-                    >
-                      Read More
-                    </a>
-                  </p>
-                </div>
-              </div>
-
-              <div className="blog-entry d-flex blog-entry-search-item">
-                <a href="single.html" className="img-link me-4">
-                  <img
-                    src="../images/img_4_sq.jpg"
-                    alt="Image"
-                    className="img-fluid"
-                  />
-                </a>
-                <div>
-                  <span className="date">
-                    Apr. 14th, 2022 &bullet; <a href="#">Business</a>
-                  </span>
-                  <h2>
-                    <a href="single.html">
-                      Thought you loved Python? Wait until you meet Rust
-                    </a>
-                  </h2>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Unde, nobis ea quis inventore vel voluptas.
-                  </p>
-                  <p>
-                    <a
-                      href="single.html"
-                      className="btn btn-sm btn-outline-primary"
-                    >
-                      Read More
-                    </a>
-                  </p>
-                </div>
-              </div>
-
-              <div className="blog-entry d-flex blog-entry-search-item">
-                <a href="single.html" className="img-link me-4">
-                  <img
-                    src="../images/img_5_sq.jpg"
-                    alt="Image"
-                    className="img-fluid"
-                  />
-                </a>
-                <div>
-                  <span className="date">
-                    Apr. 14th, 2022 &bullet; <a href="#">Business</a>
-                  </span>
-                  <h2>
-                    <a href="single.html">
-                      Thought you loved Python? Wait until you meet Rust
-                    </a>
-                  </h2>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Unde, nobis ea quis inventore vel voluptas.
-                  </p>
-                  <p>
-                    <a
-                      href="single.html"
-                      className="btn btn-sm btn-outline-primary"
-                    >
-                      Read More
-                    </a>
-                  </p>
-                </div>
-              </div>
-
+              {isLoading ? (
+                <p
+                  style={{
+                    color: "red",
+                    fontSize: "1.2rem",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Loading...
+                </p>
+              ) : null}
+              {categoryWiseBlog?.length > 0 ? (
+                categoryWiseBlog?.map((categoryBlog) => {
+                  return (
+                    <>
+                      <div
+                        key={categoryBlog?._id}
+                        className="blog-entry d-flex blog-entry-search-item"
+                      >
+                        <Link
+                          to={`/single_post/${categoryBlog?._id}`}
+                          className="img-link me-4"
+                        >
+                          <img
+                            src={categoryBlog?.blogImg}
+                            alt="Image"
+                            className="img-fluid"
+                          />
+                        </Link>
+                        <div>
+                          <span className="date">
+                            {format(
+                              new Date(categoryBlog?.publishDate),
+                              "MMM. do ,yyyy"
+                            )}{" "}
+                            &#x2022; <a href="#">{category?.categoryName}</a>
+                          </span>
+                          <h2>
+                            <Link to={`/single_post/${categoryBlog?._id}`}>
+                              {categoryBlog?.title?.slice(0, 25) + "...."}
+                            </Link>
+                          </h2>
+                          <p>
+                            {parse(
+                              categoryBlog?.descriptionOne?.slice(0, 100) +
+                                "...."
+                            )}
+                          </p>
+                          <p>
+                            <Link
+                              to={`/single_post/${categoryBlog?._id}`}
+                              className="btn btn-sm btn-outline-primary"
+                            >
+                              Read More
+                            </Link>
+                          </p>
+                        </div>
+                      </div>
+                    </>
+                  );
+                })
+              ) : (
+                <span className="text-danger">blogs not found</span>
+              )}
               <div className="row text-start pt-5 border-top">
                 <div className="col-md-12">
                   <div className="custom-pagination">
@@ -201,12 +135,9 @@ function CategoryWiseBlog({title}) {
                   />
                 </form>
               </div>
-
               <PopularPosts />
-
-              <Categories />
-
-              <Tags />
+              <Categories categories={data?.categories} />
+              <Tags tags={data?.tags} />
             </div>
           </div>
         </div>

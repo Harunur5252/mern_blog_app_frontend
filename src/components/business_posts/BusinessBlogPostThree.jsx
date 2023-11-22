@@ -1,100 +1,43 @@
-import React from 'react'
+import React from "react";
+import { format } from "date-fns";
+import parse from "html-react-parser";
+import { Link } from "react-router-dom";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
-function BusinessBlogPostThree() {
+function BusinessBlogPostThree({ data }) {
   return (
     <>
-      <div className="col-md-6 col-lg-3">
-        <div className="blog-entry">
-          <a href="single.html" className="img-link">
-            <img
-              src="./images/img_1_horizontal.jpg"
-              alt="Image"
-              className="img-fluid"
-            />
-          </a>
-          <span className="date">Apr. 14th, 2022</span>
-          <h2>
-            <a href="single.html">
-              Thought you loved Python? Wait until you meet Rust
-            </a>
-          </h2>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-          <p>
-            <a href="#" className="read-more">
-              Continue Reading
-            </a>
-          </p>
-        </div>
-      </div>
-      <div className="col-md-6 col-lg-3">
-        <div className="blog-entry">
-          <a href="single.html" className="img-link">
-            <img
-              src="./images/img_2_horizontal.jpg"
-              alt="Image"
-              className="img-fluid"
-            />
-          </a>
-          <span className="date">Apr. 14th, 2022</span>
-          <h2>
-            <a href="single.html">
-              Startup vs corporate: What job suits you best?
-            </a>
-          </h2>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-          <p>
-            <a href="#" className="read-more">
-              Continue Reading
-            </a>
-          </p>
-        </div>
-      </div>
-      <div className="col-md-6 col-lg-3">
-        <div className="blog-entry">
-          <a href="single.html" className="img-link">
-            <img
-              src="./images/img_3_horizontal.jpg"
-              alt="Image"
-              className="img-fluid"
-            />
-          </a>
-          <span className="date">Apr. 14th, 2022</span>
-          <h2>
-            <a href="single.html">UK sees highest inflation in 30 years</a>
-          </h2>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-          <p>
-            <a href="#" className="read-more">
-              Continue Reading
-            </a>
-          </p>
-        </div>
-      </div>
-      <div className="col-md-6 col-lg-3">
-        <div className="blog-entry">
-          <a href="single.html" className="img-link">
-            <img
-              src="./images/img_4_horizontal.jpg"
-              alt="Image"
-              className="img-fluid"
-            />
-          </a>
-          <span className="date">Apr. 14th, 2022</span>
-          <h2>
-            <a href="single.html">
-              Don’t assume your user data in the cloud is safe
-            </a>
-          </h2>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-          <p>
-            <a href="#" className="read-more">
-              Continue Reading
-            </a>
-          </p>
-        </div>
-      </div>
+      {data?.data?.slice(5, 9)?.map((blog) => {
+        return (
+          <div key={blog?._id} className="col-md-6 col-lg-3">
+            <div className="blog-entry">
+              <Link to={`/single_post/${blog?._id}`} className="img-link">
+                <img src={blog?.blogImg} alt="Image" className="img-fluid" />
+              </Link>
+              <span className="date">
+                {format(new Date(blog?.publishDate), "MMM. do ,yyyy")}
+              </span>
+              <h2>
+                <Link to={`/single_post/${blog?._id}`}>
+                  {blog?.title?.slice(0, 25) + "......"}
+                </Link>
+              </h2>
+              <p>
+                {parse(blog?.descriptionOne?.slice(0, 100) + "....") || (
+                  <Skeleton style={{ height: "2.5rem" }} />
+                )}
+              </p>
+              <p>
+                <Link to={`/single_post/${blog?._id}`} className="read-more">
+                  Continue Reading
+                </Link>
+              </p>
+            </div>
+          </div>
+        );
+      })}
     </>
   );
 }
 
-export default BusinessBlogPostThree
+export default BusinessBlogPostThree;

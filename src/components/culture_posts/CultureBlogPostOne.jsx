@@ -1,61 +1,47 @@
-function CultureBlogPostOne() {
+import { format } from "date-fns";
+import { Link } from "react-router-dom";
+import parse from "html-react-parser";
+
+function CultureBlogPostOne({ data }) {
   return (
-    <div className="col-md-9 order-md-2">
-      <div className="row g-3">
-        <div className="col-md-6">
-          <div className="blog-entry">
-            <a href="single.html" className="img-link">
-              <img
-                src="./images/img_1_sq.jpg"
-                alt="Image"
-                className="img-fluid"
-              />
-            </a>
-            <span className="date">Apr. 14th, 2022</span>
-            <h2>
-              <a href="single.html">
-                Thought you loved Python? Wait until you meet Rust
-              </a>
-            </h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde,
-              nobis ea quis inventore vel voluptas.
-            </p>
-            <p>
-              <a href="single.html" className="btn btn-sm btn-outline-primary">
-                Read More
-              </a>
-            </p>
-          </div>
-        </div>
-        <div className="col-md-6">
-          <div className="blog-entry">
-            <a href="single.html" className="img-link">
-              <img
-                src="./images/img_2_sq.jpg"
-                alt="Image"
-                className="img-fluid"
-              />
-            </a>
-            <span className="date">Apr. 14th, 2022</span>
-            <h2>
-              <a href="single.html">
-                Startup vs corporate: What job suits you best?
-              </a>
-            </h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde,
-              nobis ea quis inventore vel voluptas.
-            </p>
-            <p>
-              <a href="single.html" className="btn btn-sm btn-outline-primary">
-                Read More
-              </a>
-            </p>
-          </div>
+    <>
+      <div className="col-md-9 order-md-2">
+        <div className="row g-3">
+          {data?.data?.slice(0, 2)?.map((blog) => {
+            return (
+              <div className="col-md-6" key={blog?._id}>
+                <div className="blog-entry">
+                  <Link to={`/single_post/${blog?._id}`} className="img-link">
+                    <img
+                      src={blog?.blogImg}
+                      alt="Image"
+                      className="img-fluid"
+                    />
+                  </Link>
+                  <span className="date">
+                    {format(new Date(blog?.publishDate), "MMM. do ,yyyy")}
+                  </span>
+                  <h2>
+                    <Link to={`/single_post/${blog?._id}`}>
+                      {blog?.title?.slice(0, 25) + "......"}
+                    </Link>
+                  </h2>
+                  <p>{parse(blog?.descriptionOne?.slice(0, 100) + "....")}</p>
+                  <p>
+                    <Link
+                      to={`/single_post/${blog?._id}`}
+                      className="btn btn-sm btn-outline-primary"
+                    >
+                      Read More
+                    </Link>
+                  </p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

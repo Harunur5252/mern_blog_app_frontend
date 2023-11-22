@@ -1,6 +1,12 @@
 import { NavLink } from "react-router-dom";
+import {
+  useGetDatabaseBlogsQuery,
+  useGetDesignBlogsQuery,
+} from "../../features/api/blogPostsApiSlices";
 
 function Header() {
+  const { data: databaseData } = useGetDatabaseBlogsQuery();
+  const { data: designData } = useGetDesignBlogsQuery();
   return (
     <nav className="site-nav">
       <div className="container">
@@ -36,7 +42,7 @@ function Header() {
                   <li className={({ isActive }) => (isActive ? "active" : "")}>
                     <NavLink to="/">Home</NavLink>
                   </li>
-                  {/* <li className="has-children">
+                  <li className="has-children">
                     <a href="category.html">Pages</a>
                     <ul className="dropdown">
                       <li>
@@ -78,12 +84,20 @@ function Header() {
                         </ul>
                       </li>
                     </ul>
-                  </li> */}
-                  <li>
-                    <NavLink to="/view_all_blogs">Culture</NavLink>
                   </li>
                   <li>
-                    <NavLink to="/view_all_blogs">Business</NavLink>
+                    <NavLink
+                      to={`/category/wise/blog/${designData?.category?._id}`}
+                    >
+                      {designData?.category?.categoryName}
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to={`/category/wise/blog/${databaseData?.category?._id}`}
+                    >
+                      {databaseData?.category?.categoryName}
+                    </NavLink>
                   </li>
                   <li>
                     <NavLink to="/view_all_blogs">Politics</NavLink>

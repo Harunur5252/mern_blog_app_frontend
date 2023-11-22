@@ -1,4 +1,10 @@
+import { Link } from "react-router-dom";
+import { useGetAllBlogsQuery } from "../../features/api/blogPostsApiSlices";
+import { format } from "date-fns";
+
 function Footer() {
+  const { data } = useGetAllBlogsQuery();
+  const recentBlogs = data?.data?.slice(0, 3)?.reverse();
   return (
     <footer className="site-footer">
       <div className="container">
@@ -52,7 +58,7 @@ function Footer() {
               <h3 className="mb-4">Company</h3>
               <ul className="list-unstyled float-start links">
                 <li>
-                  <a href="#">About us</a>
+                  <Link to={`/about/us`}>About us</Link>
                 </li>
                 <li>
                   <a href="#">Services</a>
@@ -97,60 +103,30 @@ function Footer() {
               <h3 className="mb-4">Recent Post Entry</h3>
               <div className="post-entry-footer">
                 <ul>
-                  <li>
-                    <a href="">
-                      <img
-                        src="../images/img_1_sq.jpg"
-                        alt="Image placeholder"
-                        className="me-4 rounded"
-                      />
-                      <div className="text">
-                        <h4>
-                          There’s a Cool New Way for Men to Wear Socks and
-                          Sandals
-                        </h4>
-                        <div className="post-meta">
-                          <span className="mr-2">March 15, 2018 </span>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="">
-                      <img
-                        src="../images/img_2_sq.jpg"
-                        alt="Image placeholder"
-                        className="me-4 rounded"
-                      />
-                      <div className="text">
-                        <h4>
-                          There’s a Cool New Way for Men to Wear Socks and
-                          Sandals
-                        </h4>
-                        <div className="post-meta">
-                          <span className="mr-2">March 15, 2018 </span>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="">
-                      <img
-                        src="../images/img_3_sq.jpg"
-                        alt="Image placeholder"
-                        className="me-4 rounded"
-                      />
-                      <div className="text">
-                        <h4>
-                          There’s a Cool New Way for Men to Wear Socks and
-                          Sandals
-                        </h4>
-                        <div className="post-meta">
-                          <span className="mr-2">March 15, 2018 </span>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
+                  {recentBlogs?.map((blog) => {
+                    return (
+                      <li key={blog?.id}>
+                        <Link to={`/single_post/${blog?._id}`}>
+                          <img
+                            src={blog?.blogImg}
+                            alt="Image placeholder"
+                            className="me-4 rounded"
+                          />
+                          <div className="text">
+                            <h4>{blog?.title?.slice(0, 25) + "...."}</h4>
+                            <div className="post-meta">
+                              <span className="mr-2">
+                                {format(
+                                  new Date(blog?.publishDate),
+                                  "MMMM do, yyyy"
+                                )}{" "}
+                              </span>
+                            </div>
+                          </div>
+                        </Link>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             </div>

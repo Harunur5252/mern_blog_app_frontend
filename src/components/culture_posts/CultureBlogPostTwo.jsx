@@ -1,61 +1,35 @@
-import React from 'react'
+import { format } from "date-fns";
+import { Link } from "react-router-dom";
+import parse from "html-react-parser";
 
-function CultureBlogPostTwo() {
+function CultureBlogPostTwo({ data }) {
   return (
     <div className="col-md-3">
       <ul className="list-unstyled blog-entry-sm">
-        <li>
-          <span className="date">Apr. 14th, 2022</span>
-          <h3>
-            <a href="single.html">
-              Don’t assume your user data in the cloud is safe
-            </a>
-          </h3>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde, nobis
-            ea quis inventore vel voluptas.
-          </p>
-          <p>
-            <a href="#" className="read-more">
-              Continue Reading
-            </a>
-          </p>
-        </li>
-
-        <li>
-          <span className="date">Apr. 14th, 2022</span>
-          <h3>
-            <a href="single.html">Meta unveils fees on metaverse sales</a>
-          </h3>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde, nobis
-            ea quis inventore vel voluptas.
-          </p>
-          <p>
-            <a href="#" className="read-more">
-              Continue Reading
-            </a>
-          </p>
-        </li>
-
-        <li>
-          <span className="date">Apr. 14th, 2022</span>
-          <h3>
-            <a href="single.html">UK sees highest inflation in 30 years</a>
-          </h3>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde, nobis
-            ea quis inventore vel voluptas.
-          </p>
-          <p>
-            <a href="#" className="read-more">
-              Continue Reading
-            </a>
-          </p>
-        </li>
+        {data?.data?.slice(2, 3)?.map((blog) => {
+          return (
+            <li key={blog?._id}>
+              <span className="date">
+                {" "}
+                {format(new Date(blog?.publishDate), "MMM. do ,yyyy")}
+              </span>
+              <h3>
+                <Link to={`/single_post/${blog?._id}`}>
+                  {blog?.title?.slice(0, 25) + "......"}
+                </Link>
+              </h3>
+              <p>{parse(blog?.descriptionOne?.slice(0, 100) + "....")}</p>
+              <p>
+                <Link to={`/single_post/${blog?._id}`} className="read-more">
+                  Continue Reading
+                </Link>
+              </p>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
 }
 
-export default CultureBlogPostTwo
+export default CultureBlogPostTwo;
